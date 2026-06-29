@@ -101,11 +101,9 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Meals Display Styles */
+/* Meals Display Styles - use Bootstrap grid, avoid overriding it */
 #mealsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    display: block;
 }
 
 .meal-card {
@@ -186,9 +184,7 @@ body {
         position: static;
     }
 
-    #mealsContainer {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    }
+    /* rely on Bootstrap responsive columns for layout */
 }
 
 @media (max-width: 768px) {
@@ -196,10 +192,7 @@ body {
         font-size: 1.25rem;
     }
 
-    #mealsContainer {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1rem;
-    }
+    /* rely on Bootstrap responsive columns for layout */
 
     .meal-card {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
@@ -224,9 +217,7 @@ body {
         padding: 0.75rem;
     }
 
-    #mealsContainer {
-        grid-template-columns: 1fr;
-    }
+    /* rely on Bootstrap responsive columns for layout */
 
     .filter-card {
         margin-bottom: 2rem;
@@ -244,6 +235,39 @@ body {
 /* Loading and Empty States */
 .text-center {
     padding: 2rem 1rem;
+}
+
+/* Ensure even, responsive columns for meal cards */
+#mealsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+/* Target the bootstrap column wrappers inserted by JS */
+#mealsContainer > .col-md-6.col-lg-4 {
+    box-sizing: border-box;
+}
+
+@media (min-width: 992px) {
+    #mealsContainer > .col-md-6.col-lg-4 {
+        flex: 0 0 calc(33.333% - 1rem);
+        max-width: calc(33.333% - 1rem);
+    }
+}
+
+@media (max-width: 991.98px) {
+    #mealsContainer > .col-md-6.col-lg-4 {
+        flex: 0 0 calc(50% - 0.75rem);
+        max-width: calc(50% - 0.75rem);
+    }
+}
+
+@media (max-width: 767.98px) {
+    #mealsContainer > .col-md-6.col-lg-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }
 
 /* Scrollbar Styling */

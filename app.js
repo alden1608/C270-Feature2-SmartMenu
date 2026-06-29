@@ -16,10 +16,10 @@ app.set('views', path.join(__dirname, 'views'));
 
 // MySQL Connection Pool
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '', // Update with your MySQL password if needed
-  database: 'feature2_db',
+  host: process.env.MYSQL_HOST || '127.0.0.1',
+  user: process.env.MYSQL_USER || 'root',
+  password: process.env.MYSQL_PASSWORD || 'rootpw',
+  database: process.env.MYSQL_DATABASE || 'feature2_db',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
