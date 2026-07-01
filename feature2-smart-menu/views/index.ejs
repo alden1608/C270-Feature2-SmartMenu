@@ -71,6 +71,13 @@
 
             <!-- Meals Display -->
             <div class="col-lg-9">
+                <div class="search-panel mb-4">
+                    <label for="searchInput" class="form-label fw-bold">Search Meals</label>
+                    <div class="input-group">
+                        <span class="input-group-text">🔍</span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by meal or restaurant name">
+                    </div>
+                </div>
                 <div class="mb-3">
                     <h3>Available Meals <span id="mealCount" class="badge bg-info"></span></h3>
                 </div>
@@ -81,16 +88,18 @@
         </div>
     </div>
 
+    <script id="meal-data" type="application/json"><%- JSON.stringify(meals) %></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         // Initial meals data
-        let allMeals = <%- JSON.stringify(meals) %>;
+        const allMeals = JSON.parse(document.getElementById('meal-data').textContent);
 
         // DOM Elements
         const caloriesSlider = document.getElementById('caloriesSlider');
         const proteinSlider = document.getElementById('proteinSlider');
         const carbsSlider = document.getElementById('carbsSlider');
         const fatsSlider = document.getElementById('fatsSlider');
+        const searchInput = document.getElementById('searchInput');
         
         const caloriesValue = document.getElementById('caloriesValue');
         const proteinValue = document.getElementById('proteinValue');
@@ -122,12 +131,15 @@
             filterMeals();
         });
 
+        searchInput.addEventListener('input', filterMeals);
+
         // Reset filters
         resetBtn.addEventListener('click', () => {
             caloriesSlider.value = 1000;
             proteinSlider.value = 100;
             carbsSlider.value = 200;
             fatsSlider.value = 100;
+            searchInput.value = '';
             
             caloriesValue.textContent = 1000;
             proteinValue.textContent = 100;
@@ -143,13 +155,19 @@
             const maxProtein = parseInt(proteinSlider.value);
             const maxCarbs = parseInt(carbsSlider.value);
             const maxFats = parseInt(fatsSlider.value);
+            const searchTerm = searchInput.value.trim().toLowerCase();
 
-            const filtered = allMeals.filter(meal => 
-                meal.calories <= maxCalories &&
-                meal.protein <= maxProtein &&
-                meal.carbs <= maxCarbs &&
-                meal.fats <= maxFats
-            );
+            const filtered = allMeals.filter(meal => {
+                const matchesSearch = !searchTerm ||
+                    String(meal.meal_name || '').toLowerCase().includes(searchTerm) ||
+                    String(meal.restaurant_name || '').toLowerCase().includes(searchTerm);
+
+                return matchesSearch &&
+                    meal.calories <= maxCalories &&
+                    meal.protein <= maxProtein &&
+                    meal.carbs <= maxCarbs &&
+                    meal.fats <= maxFats;
+            });
 
             renderMeals(filtered);
             mealCount.textContent = filtered.length;

@@ -101,6 +101,30 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Search Panel Styles */
+.search-panel {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-panel .form-label {
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.search-panel .input-group-text {
+    background-color: var(--light-color);
+    border-right: 0;
+}
+
+.search-panel .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
 /* Meals Display Styles - use Bootstrap grid, avoid overriding it */
 #mealsContainer {
     display: block;
